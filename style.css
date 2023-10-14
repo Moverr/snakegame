@@ -1,0 +1,21 @@
+#game-container {
+    width: 500px;
+    height: 500px;
+    border: 2px solid #000;
+    position: relative;
+    overflow: hidden; margin: auto;
+}
+
+#snake, #food {
+    width: 20px;
+    height: 20px;
+    position: absolute; 
+}
+
+#snake {
+    background-color: green;
+}
+
+#food {
+    background-color: red;
+}
