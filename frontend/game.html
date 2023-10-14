@@ -12,7 +12,7 @@
 
 </head>
 
-<body>
+<body  >
 
 
 
@@ -31,6 +31,10 @@
             padding: 25px;
         }
 
+        .table tbody tr:nth-child(odd) {
+            background-color: #eee;
+        }
+
         .table tbody tr:nth-child(even) {
             background-color: aliceblue;
         }
@@ -46,16 +50,17 @@
 
         <div class="item1 ">
             <h1>Level </h1>
-            <select id="selct_level">
-                <option value="1">Level 1</option>
-                <option value="1">Level 1</option>
-                <option value="1">Level 1</option>
-                <option value="1">Level 1</option>
+            <select id="selct_level" onchange="updateLevel(this)">
+                <option value="300">Level 1</option>
+                <option value="250">Level 2</option>
+                <option value="200">Level 3</option>
+                <option value="150">Level 4</option>
+                <option value="100">Level 5</option>
             </select>
             <h1>Leadership Board </h1>
             <div class="leadership-panel">
-               
-              
+
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -163,8 +168,8 @@
         <div class="item3">
             <h1>Previous Scores Board </h1>
             <div class="leadership-panel">
-               
-              
+
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -177,14 +182,14 @@
 
                     <tbody>
                         <tr>
-                            <td>1</td> 
+                            <td>1</td>
                             <td>2344</td>
                             <td>14/10/2022</td>
                         </tr>
-                       
- 
 
-  
+
+
+
 
                     </tbody>
 

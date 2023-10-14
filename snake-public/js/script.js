@@ -89,6 +89,14 @@ const initGame = () => {
 }
 
 let speed = 300;
+
+//todo: update level 
+const updateLevel=(e) => {
+    speed = e.value;  
+    console.log(value);
+}
+
+
 updateFoodPosition();
 setIntervalId = setInterval(initGame, speed);
 document.addEventListener("keyup", changeDirection);
