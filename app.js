@@ -35,9 +35,9 @@ app.post("/", function (req, res) {
         res.status(500).json({ error: 'Database error' });
         return;
       }
-      res.sendFile(path.join(__dirname, "/frontend/game.html"));
-    }
- 
+     
+    });
+    res.sendFile(path.join(__dirname, "/frontend/game.html"));
    
   }else{
     res.sendFile(path.join(__dirname, "/frontend/register.html"));
