@@ -24,12 +24,20 @@ const updateFoodPosition = () => {
 const handleGameOver = () => {
     // Clearing the timer and reloading the page on game over
     clearInterval(setIntervalId);
-    alert("Game Over! Press OK to replay...");
-    location.reload();
+     
+    scoreElement.innerText = "Game Over! Press Arrow to replay...";
+    //location.reload();
 }
 
 const changeDirection = e => {
     // Changing velocity value based on key press
+    if(e.key === "Enter"){
+        location.reload();
+        init()
+        scoreElement.innerText = `Score: ${score}`;
+       
+    }
+
     if(e.key === "ArrowUp" && velocityY != 1) {
         velocityX = 0;
         velocityY = -1;
@@ -89,6 +97,15 @@ const initGame = () => {
 }
 
 let speed = 300;
-updateFoodPosition();
-setIntervalId = setInterval(initGame, speed);
-document.addEventListener("keyup", changeDirection);
+const updateLevel=(e)=>{
+    speed = e.value;
+    setIntervalId = setInterval(initGame, speed);
+}
+
+const init = ()=>{
+    updateFoodPosition();
+    setIntervalId = setInterval(initGame, speed);
+    document.addEventListener("keyup", changeDirection);
+}
+
+init();
