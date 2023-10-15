@@ -26,8 +26,19 @@ app.post("/", function (req, res) {
   const { username } = req.body;
   if(username != null){
     console.log(username);
+    // save this to the database and move pass it in the name 
     // res.send("Login successful!");
-    res.sendFile(path.join(__dirname, "/frontend/game.html"));
+    const query = "INSERT INTO `profiles` (`id`, `name`, `date_created`) VALUES (NULL, '"+username+"', current_timestamp());";
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error executing query:', err);
+        res.status(500).json({ error: 'Database error' });
+        return;
+      }
+      res.sendFile(path.join(__dirname, "/frontend/game.html"));
+    }
+ 
+   
   }else{
     res.sendFile(path.join(__dirname, "/frontend/register.html"));
   }
