@@ -24,8 +24,14 @@ app.get("/", function (req, res) {
 
 app.post("/", function (req, res) {
   const { username } = req.body;
-  console.log(username);
-  res.send("Login successful!");
+  if(username != null){
+    console.log(username);
+    // res.send("Login successful!");
+    res.sendFile(path.join(__dirname, "/frontend/game.html"));
+  }else{
+    res.sendFile(path.join(__dirname, "/frontend/register.html"));
+  }
+
 });
 
 app.get("/game", function (req, res) {
