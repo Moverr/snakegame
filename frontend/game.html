@@ -60,6 +60,12 @@
             <h1>Leadership Board </h1>
             <div class="leadership-panel">
 
+                <ul>
+                    <% data.leaderboard.items.forEach(function(item) { %>
+                      <li><%= item %></li>
+                    <% }); %>
+                  </ul>
+
 
                 <table class="table">
                     <thead>

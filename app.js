@@ -8,6 +8,12 @@ app.use("/static", express.static(path.join(__dirname, "frontend")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/frontend'); 
+
+
+
 const port = process.env.PORT || 3000;
 // MySQL database configuration
 const db = mysql.createConnection({
@@ -22,6 +28,14 @@ app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/frontend/register.html"));
 });
 
+const leaderboard = [
+  {level:"level 1",id:1,name:"movers",points:2322},
+  {level:"level 1",id:1,name:"movers",points:2322},
+  {level:"level 1",id:1,name:"movers",points:2322}
+]
+  
+ 
+
 app.post("/", function (req, res) {
   const { username } = req.body;
   if(username != null){
@@ -31,13 +45,13 @@ app.post("/", function (req, res) {
     const query = "INSERT INTO `profiles` (`id`, `name`, `date_created`) VALUES (NULL, '"+username+"', current_timestamp());";
     db.query(query, (err, results) => {
       if (err) {
-        console.error('Error executing query:', err);
-        res.status(500).json({ error: 'Database error' });
-        return;
+        console.error('Error executing query:', err); 
       }
-     
+
+      const data = leaderboard;
+      res.send(path.join(__dirname, "/frontend/game.html",{data}));
     });
-    res.sendFile(path.join(__dirname, "/frontend/game.html"));
+  
    
   }else{
     res.sendFile(path.join(__dirname, "/frontend/register.html"));
