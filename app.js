@@ -29,9 +29,9 @@ app.get("/", function (req, res) {
 });
 
 const leaderboard = [
-  {level:"level 1",id:1,name:"movers",points:2322},
-  {level:"level 1",id:1,name:"movers",points:2322},
-  {level:"level 1",id:1,name:"movers",points:2322}
+  {level:"level 1",id:1,name:"movers",points:12},
+  {level:"level 1",id:2,name:"movers",points:234},
+  {level:"level 1",id:3,name:"movers",points:43}
 ]
   
  
@@ -49,7 +49,7 @@ app.post("/", function (req, res) {
       }
 
       const data = leaderboard;
-      res.send(path.join(__dirname, "/frontend/game.html",{data}));
+      res.render("game",{data});
     });
   
    
