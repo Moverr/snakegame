@@ -28,7 +28,7 @@ const handleGameOver = () => {
   clearInterval(setIntervalId);
 
   scoreElement.innerText = "Game Over! Press Arrow to replay...";
-  //location.reload();
+  location.reload();
 };
 
 const changeDirection = (e) => {
@@ -111,7 +111,7 @@ const updateLevel = (e) => {
   speed = e.value;
   setIntervalId = setInterval(initGame, speed);
   localStorage.setItem("speed", speed);
-  //todo: update the local level status
+  location.reload();
 };
 
 const init = () => {
