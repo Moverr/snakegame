@@ -1,5 +1,5 @@
 const express = require("express");
-const mysql = require("mysql");
+const mysql =require("mysql");
 const path = require("path");
 
 const app = express();
@@ -13,12 +13,24 @@ app.set("views", __dirname + "/frontend");
 
 const port = process.env.PORT || 3000;
 // MySQL database configuration
+/*
 const db = mysql.createConnection({
   host: "localhost",
   port: "3306",
   user: "admin",
   password: "admin",
   database: "snakegame",
+  allowPublicKeyRetrieval: true,
+  ssl: false,
+});
+*/
+
+const db = mysql.createConnection({
+  host: "newvision-db.csa8xeixiy9f.us-east-1.rds.amazonaws.com",
+  port: "3306",
+  user: "admin",
+  password: "Newvision1*",
+  database: "snakegame" 
 });
 
 app.get("/", function (req, res) {
@@ -26,11 +38,7 @@ app.get("/", function (req, res) {
   res.render("register", { data });
 });
 
-const leaderboard = [
-  { level: "1", id: 1, name: "movers", points: 12 },
-  { level: "2", id: 2, name: "movers", points: 234 },
-  { level: "3", id: 3, name: "movers", points: 43 },
-];
+ 
 
 const scores = (profile_id) => {
   //todo: return scores ::

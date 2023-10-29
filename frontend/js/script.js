@@ -38,7 +38,7 @@ const signal = abortController.signal;
 const timeoutDuration = 10000;
 const sendSCores=()=>{
     // Define the URL of the API endpoint
-const apiUrl = 'http://localhost:3000/recordscore';
+const apiUrl = 'http://52.207.255.31:3000/recordscore';
 
 console.log(apiUrl);
 // Data to send in the POST request (in this case, a JSON object)
