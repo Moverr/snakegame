@@ -13,7 +13,7 @@ app.set("views", __dirname + "/frontend");
 
 const port = process.env.PORT || 3000;
 // MySQL database configuration
-/*
+
 const db = mysql.createConnection({
   host: "localhost",
   port: "3306",
@@ -23,15 +23,8 @@ const db = mysql.createConnection({
   allowPublicKeyRetrieval: true,
   ssl: false,
 });
-*/
 
-const db = mysql.createConnection({
-  host: "newvision-db.csa8xeixiy9f.us-east-1.rds.amazonaws.com",
-  port: "3306",
-  user: "admin",
-  password: "Newvision1*",
-  database: "snakegame" 
-});
+ 
 
 app.get("/", function (req, res) {
   const data = null;
