@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>CLASSIC SNAKE GAME</title>
+    <link rel="stylesheet" href="./static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./static/font-awesome-4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body  >
+
+
+
+    <style>
+        .table {
+            width: 100%;
+        }
+
+        .table thead {
+            background: #eee;
+            padding: 15px;
+            font-weight: bold;
+        }
+
+        .table td {
+            padding: 25px;
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: #eee;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: aliceblue;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+        }
+    </style>
+
+
+    <div class="flex-container">
+
+     
+        <div class="item1 ">
+            <h1>Profile </h1>
+         <input id="profile-x" style="font-size: 25px; border: 0px; text-align: center; text-transform: uppercase; background-color: beige; width: 100%; padding: 2px;" readonly type="text" value=<%= data.profile.name %> /> 
+            <h1>Level </h1>
+            <select id="selct_level" onchange="updateLevel(this)">
+                <option value="300">Level 1</option>
+                <option value="250">Level 2</option>
+                <option value="200">Level 3</option>
+                <option value="150">Level 4</option>
+                <option value="100">Level 5</option>
+            </select>
+            <h1>Leadership Board </h1>
+            <div class="leadership-panel">
+               
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Name</td>
+                            <td>Points</td>
+                        </tr>
+
+                    </thead>
+
+
+               
+
+
+              
+                    <tbody>
+                        
+                        <% if(data.scores){
+
+                        %>
+                            <% data.scores.sort((a,b)=>b.score -  a.score).forEach(function(item) { %>
+                              
+                              <tr>
+                                <td><%= item.id %></td>
+                                <td><%= item.name %></td>
+                                <td><%= item.score %></td>
+                            </tr>
+                            <% });} %>
+                          
+
+                    
+    
+
+
+                    </tbody>
+
+
+                </table>
+            </div>
+
+
+        </div>
+        <div class="item2 wrapper">
+          
+            <div class="game-details">
+                <span class="score" style="background-color:yellowgreen; color: white; 
+                vertical-align: middle; display: block; width: 50%; text-align: center;
+                 padding: 10px; border: 1px solid #eee;">
+                START </span>
+                <span class="high-score" style="background-color:yellowgreen; color: white; 
+                vertical-align: middle; display: block; width: 50%; text-align: center;
+                 padding: 10px; border: 1px solid #eee;">High Score: 0</span>
+            </div>
+            <div class="play-board"></div>
+            <div class="controls" style="display: block;">
+                <i data-key="ArrowLeft" class="fa fa-arrow-left" aria-hidden="true"></i>
+                <i data-key="ArrowUp" class="fa fa-arrow-up" aria-hidden="true"></i>
+                <i data-key="ArrowRight" class="fa fa-arrow-right" aria-hidden="true"></i>
+                <i data-key="ArrowDown" class="fa fa-arrow-down" aria-hidden="true"></i>
+
+            </div>
+
+
+
+        </div>
+        <div class="item3">
+            <h1>Previous Scores Board </h1>
+            <div class="leadership-panel">
+
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                         
+                            <td>Points </td>
+                            <td>Date</td>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        <% if(data.scores){
+
+                            %>
+                                <% data.scores.filter((x)=>x.name === data.profile.name ).forEach(function(item) { %>
+                                  
+                                  <tr>
+                                    <td><%= item.id %></td>
+                                    <td><%= item.name %></td>
+                                    <td><%= item.score %></td>
+                                </tr>
+                                <% });} %>
+
+
+
+
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+ 
+
+
+    <script src="./static/js/script.js" defer></script>
+
+</body>
+
+</html>
