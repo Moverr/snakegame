@@ -27,10 +27,38 @@ app.get("/", function (req, res) {
 });
 
 const leaderboard = [
-  { level: "level 1", id: 1, name: "movers", points: 12 },
-  { level: "level 1", id: 2, name: "movers", points: 234 },
-  { level: "level 1", id: 3, name: "movers", points: 43 },
+  { level: "1", id: 1, name: "movers", points: 12 },
+  { level: "2", id: 2, name: "movers", points: 234 },
+  { level: "3", id: 3, name: "movers", points: 43 },
 ];
+
+const scores=(profile_id)=>{
+
+  //todo: return scores :: 
+  const query1 ="SELECT * FROM scores where profile_id = " + profile_id + " limit 100";
+  db.query(query1, (err, results) => {
+    if (err) {
+      return [];
+    }else{
+      return results;
+    }
+  });
+}
+
+
+  const leadership=(level)=>{
+ 
+    const query1 ="SELECT distinct * FROM scores where level  like '" + level + "' limit 100";
+    db.query(query1, (err, results) => {
+      if (err) {
+        return [];
+      }else{
+        return results;
+      }
+    });
+  }
+
+    
 
 app.post("/", function (req, res) {
   const { username } = req.body;
@@ -50,7 +78,7 @@ app.post("/", function (req, res) {
           console.log("asking me mover");
           console.log(results);
           const data = {
-            leaderboard: leaderboard,
+            leaderboard: leaderboard.filter(x=>x.level ==="1"),
             profile: results[0],
           };
           res.render("game", { data });
@@ -81,7 +109,7 @@ app.get("/game", function (req, res) {
   res.sendFile(path.join(__dirname, "/frontend/game.html"));
 });
 
-app.get("/recordgame", function (req, res) {
+app.get("/recordScore", function (req, res) {
   res.sendFile(path.join(__dirname, "/frontend/game.html"));
 });
 

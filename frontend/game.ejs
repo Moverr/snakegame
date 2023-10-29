@@ -50,7 +50,7 @@
 
      
         <div class="item1 ">
-            Profile :  Blue BErry 
+            <h1>Profile : <%= data.profile.name %></h1>
             <h1>Level </h1>
             <select id="selct_level" onchange="updateLevel(this)">
                 <option value="300">Level 1</option>
@@ -79,14 +79,17 @@
               
                     <tbody>
                         
-                            <% data.forEach(function(item) { %>
+                        <% if(data.leaderboard){
+
+                        %>
+                            <% data.leaderboard.forEach(function(item) { %>
                               
                               <tr>
                                 <td><%= item.id %></td>
                                 <td><%= item.name %></td>
                                 <td><%= item.points %></td>
                             </tr>
-                            <% }); %>
+                            <% });} %>
                           
 
                     
@@ -161,24 +164,7 @@
 
     </div>
 
-
-
-    <!-- <div class="wrapper  ">
-        <div class="game-details">
-            <span class="score">Score: 0</span>
-            <span class="high-score">High Score: 0</span>
-        </div>
-        <div class="play-board"></div>
-        <div class="controls" style="display: block;">
-            <i data-key="ArrowLeft" class="fa fa-arrow-left" aria-hidden="true"></i>
-            <i data-key="ArrowUp" class="fa fa-arrow-up" aria-hidden="true"></i>
-            <i data-key="ArrowRight" class="fa fa-arrow-right" aria-hidden="true"></i>
-            <i data-key="ArrowDown" class="fa fa-arrow-down" aria-hidden="true"></i>
-
-        </div>
-    </div> -->
-
-
+ 
 
 
     <script src="./static/js/script.js" defer></script>
