@@ -24,7 +24,7 @@ const db = mysql.createConnection({
   ssl: false,
 });
 
- 
+  
 
 app.get("/", function (req, res) {
   const data = null;
