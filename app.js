@@ -1,5 +1,5 @@
 const express = require("express");
-const mysql = require("mysql");
+const mysql =require("mysql");
 const path = require("path");
 
 const app = express();
@@ -26,13 +26,11 @@ const db = mysql.createConnection({
 */
 
 const db = mysql.createConnection({
-  host: "160.119.149.158",
+  host: "newvision-db.csa8xeixiy9f.us-east-1.rds.amazonaws.com",
   port: "3306",
-  user: "remote",
-  password: "P@ssword?123",
-  database: "snakegame",
-  allowPublicKeyRetrieval: true,
-  ssl: false,
+  user: "admin",
+  password: "Newvision1*",
+  database: "snakegame" 
 });
 
 app.get("/", function (req, res) {
