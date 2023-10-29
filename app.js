@@ -65,6 +65,12 @@ app.post("/", function (req, res) {
   if (username != null) {
     console.log(username);
 
+    const query =
+    "INSERT INTO `profiles` (`id`, `name`, `date_created`) VALUES (NULL, '" +
+    username +
+    "', current_timestamp());";
+
+    
     //todo: select username from database if exits return id else create
     const query1 =
       "SELECT * FROM profiles where name like '" + username + "' limit 1";
@@ -74,7 +80,7 @@ app.post("/", function (req, res) {
         res.status(500);
         return res.render("register", { err });
       } else {
-        res.redirect('/game');
+        res.redirect('/game?username='+username);
       }
     });
   }
@@ -82,21 +88,28 @@ app.post("/", function (req, res) {
 
 app.get("/game", function (req, res) {
 
+  const username = req.query.username;
   const query =
-  "INSERT INTO `profiles` (`id`, `name`, `date_created`) VALUES (NULL, '" +
-  username +
-  "', current_timestamp());";
+  "SELECT * FROM profiles where name like '" + username + "' limit 1";
 
+  
+
+  console.log("movers ;")
 db.query(query, (err, results) => {
   if (err) {
     console.error("Error executing query:", err);
     return res.render("register", { err });
   } else {
-    const data = {
-      leaderboard: leaderboard,
-      profile: results,
-    };
-    res.render("game", { data });
+    if(results.length > 0){
+      const data = {
+        leaderboard: leaderboard,
+        profile: results[0],
+      };
+     return  res.render("game", { data });
+    }else{
+      return res.render("register", { err });
+    }
+    
   }
 });
 
