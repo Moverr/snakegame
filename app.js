@@ -118,16 +118,30 @@ db.query(query, (err, results) => {
  
 });
 
-app.post("/recordScore", function (req, res) {
+app.post("/recordscore", function (req, res) {
+
+  console.log("pass me ");
+  res.send("reached");
+
+  
   const { level,score,profile } = req.body;
-  if(level != null && score != null  && profile != null ){
+  if(level != undefined && score != undefined  && profile != undefined ){
     const query =
     "INSERT INTO `scores` (`id`, `profile_id`, `score`, `level`, `date_created`) VALUES (NULL, (SELECT id from profiles where name like '"+profile+"' limit 1 ),"+score+","+level+", current_timestamp());";
   
     db.query(query, (err, results) => {
+      if(err){
+        console.log(err);
+      }else{
+        console.log(results);
+    
+      }
     });
-     res.send("done");
+    res.send("worked")
+  }else{
+    res.status(400).send("did not work");
   }
+
 });
 
 app.listen(port, function () {

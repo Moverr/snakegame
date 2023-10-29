@@ -33,10 +33,14 @@ const handleGameOver = () => {
   sendSCores()
 };
 
+const abortController = new AbortController();
+const signal = abortController.signal;
+const timeoutDuration = 10000;
 const sendSCores=()=>{
     // Define the URL of the API endpoint
-const apiUrl = 'http://localhost:3000/recordScore';
+const apiUrl = 'http://localhost:3000/recordscore';
 
+console.log(apiUrl);
 // Data to send in the POST request (in this case, a JSON object)
 const postData = {
   score: score,
@@ -51,13 +55,14 @@ const requestOptions = {
   },
   body: JSON.stringify(postData), // Convert the data to a JSON string
 };
-
+console.log(requestOptions);
 // Make the POST request using the Fetch API
 fetch(apiUrl, requestOptions)
   .then(response => {
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+     console.log('Network response was not ok');
     }
+    console.log(response);
     return response.json(); // Parse the response body as JSON
   })
   .then(data => {
@@ -67,7 +72,9 @@ fetch(apiUrl, requestOptions)
     console.error('There was a problem with the POST request:', error);
   });
 
- // location.reload();
+  setTimeout(() => {
+    abortController.abort();
+  }, timeoutDuration);
 }
 
 const changeDirection = (e) => {
@@ -168,6 +175,8 @@ const init = () => {
   updateFoodPosition();
   setIntervalId = setInterval(initGame, speed);
   document.addEventListener("keyup", changeDirection);
+  sendSCores();
+
 };
 
 init();
