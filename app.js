@@ -8,11 +8,8 @@ app.use("/static", express.static(path.join(__dirname, "frontend")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/frontend'); 
-
-
+app.set("view engine", "ejs");
+app.set("views", __dirname + "/frontend");
 
 const port = process.env.PORT || 3000;
 // MySQL database configuration
@@ -25,38 +22,59 @@ const db = mysql.createConnection({
 });
 
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "/frontend/register.html"));
+  const data = null;
+  res.render("register", { data });
 });
 
 const leaderboard = [
-  {level:"level 1",id:1,name:"movers",points:12},
-  {level:"level 1",id:2,name:"movers",points:234},
-  {level:"level 1",id:3,name:"movers",points:43}
-]
-  
- 
+  { level: "level 1", id: 1, name: "movers", points: 12 },
+  { level: "level 1", id: 2, name: "movers", points: 234 },
+  { level: "level 1", id: 3, name: "movers", points: 43 },
+];
 
 app.post("/", function (req, res) {
   const { username } = req.body;
-  if(username != null){
+  if (username != null) {
     console.log(username);
-    // save this to the database and move pass it in the name 
-    // res.send("Login successful!");
-    const query = "INSERT INTO `profiles` (`id`, `name`, `date_created`) VALUES (NULL, '"+username+"', current_timestamp());";
-    db.query(query, (err, results) => {
+
+    //todo: select username from database if exits return id else create
+    const query1 =
+      "SELECT * FROM profiles where name like '" + username + "' limit 1";
+    db.query(query1, (err, results) => {
       if (err) {
-        console.error('Error executing query:', err); 
+        console.error("Error executing query: " + err);
+        res.status(500);
+        return res.render("register", { err });
+      } else {
+        if (results.length > 0) {
+          console.log("asking me mover");
+          console.log(results);
+          const data = {
+            leaderboard: leaderboard,
+            profile: results[0],
+          };
+          res.render("game", { data });
+        } else {
+          const query =
+            "INSERT INTO `profiles` (`id`, `name`, `date_created`) VALUES (NULL, '" +
+            username +
+            "', current_timestamp());";
+
+          db.query(query, (err, results) => {
+            if (err) {
+              console.error("Error executing query:", err);
+            } else {
+              const data = {
+                leaderboard: leaderboard,
+                profile: results,
+              };
+              res.render("game", { data });
+            }
+          });
+        }
       }
-
-      const data = leaderboard;
-      res.render("game",{data});
     });
-  
-   
-  }else{
-    res.sendFile(path.join(__dirname, "/frontend/register.html"));
   }
-
 });
 
 app.get("/game", function (req, res) {

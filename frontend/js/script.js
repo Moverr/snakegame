@@ -100,6 +100,7 @@ let speed = 300;
 const updateLevel=(e)=>{
     speed = e.value;
     setIntervalId = setInterval(initGame, speed);
+    e.blur();
 }
 
 const init = ()=>{
