@@ -45,6 +45,7 @@ console.log(apiUrl);
 const postData = {
   score: score,
   level: speed,
+  profile:document.getElementById("profile-x").value
 };
 
 // Options for the POST request, including the HTTP method, headers, and the request body
@@ -175,7 +176,7 @@ const init = () => {
   updateFoodPosition();
   setIntervalId = setInterval(initGame, speed);
   document.addEventListener("keyup", changeDirection);
-  sendSCores();
+ 
 
 };
 

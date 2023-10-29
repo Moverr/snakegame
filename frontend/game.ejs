@@ -80,15 +80,15 @@
               
                     <tbody>
                         
-                        <% if(data.leaderboard){
+                        <% if(data.scores){
 
                         %>
-                            <% data.leaderboard.forEach(function(item) { %>
+                            <% data.scores.sort((a,b)=>b.score -  a.score).forEach(function(item) { %>
                               
                               <tr>
                                 <td><%= item.id %></td>
                                 <td><%= item.name %></td>
-                                <td><%= item.points %></td>
+                                <td><%= item.score %></td>
                             </tr>
                             <% });} %>
                           
@@ -145,13 +145,17 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                        
-                            <td>2344</td>
-                            <td>14/10/2022</td>
-                        </tr>
+                        <% if(data.scores){
 
+                            %>
+                                <% data.scores.filter((x)=>x.name === data.profile.name ).forEach(function(item) { %>
+                                  
+                                  <tr>
+                                    <td><%= item.id %></td>
+                                    <td><%= item.name %></td>
+                                    <td><%= item.score %></td>
+                                </tr>
+                                <% });} %>
 
 
 

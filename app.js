@@ -32,33 +32,20 @@ const leaderboard = [
   { level: "3", id: 3, name: "movers", points: 43 },
 ];
 
-const scores=(profile_id)=>{
-
-  //todo: return scores :: 
-  const query1 ="SELECT * FROM scores where profile_id = " + profile_id + " limit 100";
+const scores = (profile_id) => {
+  //todo: return scores ::
+  const query1 =
+    "SELECT * FROM scores where profile_id = " + profile_id + " limit 100";
   db.query(query1, (err, results) => {
     if (err) {
+      console.log(err);
       return [];
-    }else{
+    } else {
+      console.log(err);
       return results;
     }
   });
-}
-
-
-  const leadership=(level)=>{
- 
-    const query1 ="SELECT distinct * FROM scores where level  like '" + level + "' limit 100";
-    db.query(query1, (err, results) => {
-      if (err) {
-        return [];
-      }else{
-        return results;
-      }
-    });
-  }
-
-    
+};
 
 app.post("/", function (req, res) {
   const { username } = req.body;
@@ -66,82 +53,107 @@ app.post("/", function (req, res) {
     console.log(username);
 
     const query =
-    "INSERT INTO `profiles` (`id`, `name`, `date_created`) VALUES (NULL, '" +
-    username +
-    "', current_timestamp());";
+      "INSERT INTO `profiles` (`id`, `name`, `date_created`) VALUES (NULL, '" +
+      username +
+      "', current_timestamp());";
 
-     
     db.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query: " + err);
-        res.status(500);
-        return res.render("register", { err });
+        console.log(err.code)
+        if(err.code ==="ER_DUP_ENTRY"){
+          res.redirect("/game?username=" + username);
+        }else{
+          res.status(500);
+      
+          return res.render("register", { err });
+        }
+      
       } else {
-        res.redirect('/game?username='+username);
+        res.redirect("/game?username=" + username);
       }
     });
   }
 });
 
 app.get("/game", function (req, res) {
-
   const username = req.query.username;
-  if(username === undefined)
-  res.redirect('/');
+  if (username === undefined) res.redirect("/");
 
   console.log(username);
 
   const query =
-  "SELECT * FROM profiles where name like '" + username + "' limit 1"; 
+    "SELECT * FROM profiles where name like '" + username + "' limit 1";
   console.log(query);
 
-db.query(query, (err, results) => {
-  if (err) {
-    console.error("Error executing query:", err);
-    res.redirect('/?error='+err);
-  } else {
-    if( results.length > 0){
-      const data = {
-        leaderboard: leaderboard,
-        profile: results[0],
-      };
-     return  res.render("game", { data });
-    }else{
-   
-      console.log(results);
-      res.redirect('/');
-    }
-    
-  }
-});
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.redirect("/?error=" + err);
+    } else {
+      if (results.length > 0) {
+        const _profile = results[0];
 
- 
+        //todo: fetch all details from the backed- 500 records, in which you can filter out and dissemiante information
+        const scoresQuery =
+          "SELECT a.id,b.name, a.score FROM scores a  inner join profiles b on a.profile_id = b.id where    a.score > 0 limit 100";
+
+          console.log(scoresQuery);
+
+        db.query(scoresQuery, (err, ScoreResults) => {
+          if (err) {
+            console.log(err);
+
+            const data = {
+              scores: [], 
+              profile: _profile,
+            };
+            return res.render("game", { data });
+          } else {
+
+            console.log(ScoreResults);
+
+            const data = {
+              scores: ScoreResults, 
+              profile: _profile,
+            };
+            return res.render("game", { data });
+          }
+        });
+      } else {
+        console.log(results);
+        res.redirect("/");
+      }
+    }
+  });
 });
 
 app.post("/recordscore", function (req, res) {
-
   console.log("pass me ");
   res.send("reached");
 
-  
-  const { level,score,profile } = req.body;
-  if(level != undefined && score != undefined  && profile != undefined ){
+  const { level, score, profile } = req.body;
+  if (level != undefined && score != undefined && profile != undefined) {
     const query =
-    "INSERT INTO `scores` (`id`, `profile_id`, `score`, `level`, `date_created`) VALUES (NULL, (SELECT id from profiles where name like '"+profile+"' limit 1 ),"+score+","+level+", current_timestamp());";
-  
+      "INSERT INTO `scores` (`id`, `profile_id`, `score`, `level`, `date_created`) VALUES (NULL, (SELECT id from profiles where name like '" +
+      profile +
+      "' limit 1 )," +
+      score +
+      "," +
+      level +
+      ", current_timestamp());";
+
     db.query(query, (err, results) => {
-      if(err){
+      if (err) {
         console.log(err);
-      }else{
+      } else {
         console.log(results);
-    
       }
     });
-    res.send("worked")
-  }else{
+    res.send("worked");
+  } else {
     res.status(400).send("did not work");
   }
-
 });
 
 app.listen(port, function () {
