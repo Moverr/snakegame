@@ -27,9 +27,48 @@ const handleGameOver = () => {
   // Clearing the timer and reloading the page on game over
   clearInterval(setIntervalId);
 
-  scoreElement.innerText = "Game Over! Press Arrow to replay...";
-  location.reload();
+  scoreElement.innerText = "Game Over! Press Enter to replay...";
+  //todo: send information to the backend 
+  //
+  sendSCores()
 };
+
+const sendSCores=()=>{
+    // Define the URL of the API endpoint
+const apiUrl = 'http://localhost:3000/recordScore';
+
+// Data to send in the POST request (in this case, a JSON object)
+const postData = {
+  score: score,
+  level: speed,
+};
+
+// Options for the POST request, including the HTTP method, headers, and the request body
+const requestOptions = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json', // Set the content type to JSON
+  },
+  body: JSON.stringify(postData), // Convert the data to a JSON string
+};
+
+// Make the POST request using the Fetch API
+fetch(apiUrl, requestOptions)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); // Parse the response body as JSON
+  })
+  .then(data => {
+    console.log('POST request was successful:', data);
+  })
+  .catch(error => {
+    console.error('There was a problem with the POST request:', error);
+  });
+
+ // location.reload();
+}
 
 const changeDirection = (e) => {
   // Changing velocity value based on key press

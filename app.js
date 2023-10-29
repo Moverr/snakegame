@@ -74,43 +74,45 @@ app.post("/", function (req, res) {
         res.status(500);
         return res.render("register", { err });
       } else {
-        if (results.length > 0) {
-          console.log("asking me mover");
-          console.log(results);
-          const data = {
-            leaderboard: leaderboard.filter(x=>x.level ==="1"),
-            profile: results[0],
-          };
-          res.render("game", { data });
-        } else {
-          const query =
-            "INSERT INTO `profiles` (`id`, `name`, `date_created`) VALUES (NULL, '" +
-            username +
-            "', current_timestamp());";
-
-          db.query(query, (err, results) => {
-            if (err) {
-              console.error("Error executing query:", err);
-            } else {
-              const data = {
-                leaderboard: leaderboard,
-                profile: results,
-              };
-              res.render("game", { data });
-            }
-          });
-        }
+        res.redirect('/game');
       }
     });
   }
 });
 
 app.get("/game", function (req, res) {
-  res.sendFile(path.join(__dirname, "/frontend/game.html"));
+
+  const query =
+  "INSERT INTO `profiles` (`id`, `name`, `date_created`) VALUES (NULL, '" +
+  username +
+  "', current_timestamp());";
+
+db.query(query, (err, results) => {
+  if (err) {
+    console.error("Error executing query:", err);
+    return res.render("register", { err });
+  } else {
+    const data = {
+      leaderboard: leaderboard,
+      profile: results,
+    };
+    res.render("game", { data });
+  }
 });
 
-app.get("/recordScore", function (req, res) {
-  res.sendFile(path.join(__dirname, "/frontend/game.html"));
+ 
+});
+
+app.post("/recordScore", function (req, res) {
+  const { level,score,profile } = req.body;
+  if(level != null && score != null  && profile != null ){
+    const query =
+    "INSERT INTO `scores` (`id`, `profile_id`, `score`, `level`, `date_created`) VALUES (NULL, (SELECT id from profiles where name like '"+profile+"' limit 1 ),"+score+","+level+", current_timestamp());";
+  
+    db.query(query, (err, results) => {
+    });
+     res.send("done");
+  }
 });
 
 app.listen(port, function () {
