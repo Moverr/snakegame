@@ -70,11 +70,8 @@ app.post("/", function (req, res) {
     username +
     "', current_timestamp());";
 
-    
-    //todo: select username from database if exits return id else create
-    const query1 =
-      "SELECT * FROM profiles where name like '" + username + "' limit 1";
-    db.query(query1, (err, results) => {
+     
+    db.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query: " + err);
         res.status(500);
@@ -89,25 +86,30 @@ app.post("/", function (req, res) {
 app.get("/game", function (req, res) {
 
   const username = req.query.username;
+  if(username === undefined)
+  res.redirect('/');
+
+  console.log(username);
+
   const query =
-  "SELECT * FROM profiles where name like '" + username + "' limit 1";
+  "SELECT * FROM profiles where name like '" + username + "' limit 1"; 
+  console.log(query);
 
-  
-
-  console.log("movers ;")
 db.query(query, (err, results) => {
   if (err) {
     console.error("Error executing query:", err);
-    return res.render("register", { err });
+    res.redirect('/?error='+err);
   } else {
-    if(results.length > 0){
+    if( results.length > 0){
       const data = {
         leaderboard: leaderboard,
         profile: results[0],
       };
      return  res.render("game", { data });
     }else{
-      return res.render("register", { err });
+   
+      console.log(results);
+      res.redirect('/');
     }
     
   }
